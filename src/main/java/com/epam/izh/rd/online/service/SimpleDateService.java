@@ -1,7 +1,10 @@
 package com.epam.izh.rd.online.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 
 public class SimpleDateService implements DateService {
@@ -14,7 +17,13 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String parseDate(LocalDate localDate) {
-        return null;
+        String pattern = "dd-MM-yyyy";
+
+        DateTimeFormatter formatter  = DateTimeFormatter.ofPattern(pattern);
+        String date = formatter.format(localDate);
+
+
+        return date;
     }
 
     /**
@@ -25,7 +34,12 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public LocalDateTime parseString(String string) {
-        return null;
+        LocalDateTime time;
+        time =LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        return time;
+
+
     }
 
     /**
@@ -37,7 +51,11 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String convertToCustomFormat(LocalDate localDate, DateTimeFormatter formatter) {
-        return null;
+
+        DateTimeFormatter format =formatter;
+        String date = format.format(localDate);
+
+        return date;
     }
 
     /**
@@ -47,7 +65,20 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getNextLeapYear() {
-        return 0;
+        LocalDate now =  LocalDate.now();
+        long getYear = now.getYear();
+
+        while(true){
+            boolean isLeap = Year.of((int) getYear).isLeap();
+            if (isLeap)
+                break;
+            else {
+                now =  now.plusYears(1);
+                getYear = now.getYear();
+            }
+        }
+
+        return getYear;
     }
 
     /**
@@ -57,7 +88,9 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getSecondsInYear(int year) {
-        return 0;
+        int numberOfDaysInYear = Year.of(year).isLeap() ? 366 : 365;
+
+        return numberOfDaysInYear * 24 * 60 * 60;
     }
 
 
