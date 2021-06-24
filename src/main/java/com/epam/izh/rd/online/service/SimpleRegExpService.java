@@ -1,5 +1,12 @@
 package com.epam.izh.rd.online.service;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class SimpleRegExpService implements RegExpService {
 
     /**
@@ -11,7 +18,16 @@ public class SimpleRegExpService implements RegExpService {
      */
     @Override
     public String maskSensitiveData() {
-        return null;
+        Path path = Paths.get(System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "sensitive_data.txt");
+        String fileContent = "";
+        try {
+            fileContent = Files.lines(path).reduce("", String::concat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return fileContent.replaceAll("(\\d{4})\\s\\d{4}\\s\\d{4}\\s(\\d{4})", "$1 **** **** $2");
     }
 
     /**
@@ -22,6 +38,17 @@ public class SimpleRegExpService implements RegExpService {
      */
     @Override
     public String replacePlaceholders(double paymentAmount, double balance) {
-        return null;
+
+        Path path = Paths.get(System.getProperty("user.dir") + File.separator + "src"+  File.separator +"main"+ File.separator +"resources"+ File.separator +"sensitive_data.txt" );
+        String fileContent ="";
+        try{
+            fileContent = Files.lines(path).reduce("", String::concat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fileContent = fileContent.replaceAll("\\$\\{payment_amount}", String.valueOf((int) paymentAmount));
+        fileContent = fileContent.replaceAll("\\$\\{balance}", String.valueOf((int) balance));
+        return fileContent;
     }
 }

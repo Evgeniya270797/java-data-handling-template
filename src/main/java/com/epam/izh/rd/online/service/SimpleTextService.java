@@ -1,5 +1,8 @@
 package com.epam.izh.rd.online.service;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 public class SimpleTextService implements TextService {
 
     /**
@@ -13,7 +16,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String removeString(String base, String remove) {
-        return null; //TODO
+        return base.replace(remove,"");
     }
 
     /**
@@ -24,7 +27,15 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        return false; //TODO
+
+        String[] splitString = text.split("");
+       if(splitString[splitString.length-1].equals("?")){
+           return true;
+       }else{
+           return false;
+       }
+
+
     }
 
     /**
@@ -35,7 +46,13 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String elem:elements) {
+            stringBuilder.append(elem);
+        }
+
+        return stringBuilder.toString();
     }
 
     /**
@@ -47,7 +64,21 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
-        return null; //TODO
+
+        String[] string = text.split("");
+
+        StringBuilder newString = new StringBuilder();
+        for (int i = 0; i < string.length; i++) {
+
+            if(i%2==0){
+                newString= newString.append((string[i].toLowerCase(Locale.ROOT)));
+            }else{
+                newString=newString.append(string[i].toUpperCase(Locale.ROOT));
+            }
+        }
+
+
+        return newString.toString();
     }
 
     /**
@@ -59,6 +90,11 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-       return false; //TODO
+        if(string.trim().equals("")){
+            return false;
+        }
+        String newString = new StringBuilder(string).reverse().toString().toLowerCase(Locale.ROOT).replace(" ", "");
+        return newString.equals(string.toLowerCase(Locale.ROOT).replace(" ", ""));
     }
+
 }
